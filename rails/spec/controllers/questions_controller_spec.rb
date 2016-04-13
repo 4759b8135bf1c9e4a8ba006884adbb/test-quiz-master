@@ -83,7 +83,7 @@ RSpec.describe QuestionsController, :type => :controller do
       }
     }
 
-    xcontext do
+    context do
       include_context "when id that does not match any question is specified"
 
       it_behaves_like :assigns_nil_to_question
@@ -163,7 +163,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
     let(:params) { { id: id } }
 
-    xcontext do
+    context do
       include_context "when id that does not match any question is specified"
 
       it_behaves_like :assigns_nil_to_question
@@ -193,7 +193,7 @@ RSpec.describe QuestionsController, :type => :controller do
     let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
     let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
 
-    xcontext do
+    context do
       include_context "when id that does not match any question is specified"
 
       it_behaves_like :assigns_nil_to_question

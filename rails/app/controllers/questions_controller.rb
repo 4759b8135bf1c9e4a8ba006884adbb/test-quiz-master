@@ -16,14 +16,27 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
+  rescue ActionController::ParameterMissing => e
+    logger.warn e.message
+    render :new
+    return
   end
 
   def update
+    unless @question
+      render :edit
+      return
+    end
+
     if @question.update_attributes question_params
       redirect_to root_path, notice: 'Question saved successfully.'
     else
       render :edit
     end
+  rescue ActionController::ParameterMissing => e
+    logger.warn e.message
+    render :edit
+    return
   end
 
   def answer
@@ -33,7 +46,7 @@ class QuestionsController < ApplicationController
   private
 
   def find_question
-    @question = Question.find(params[:id])
+    @question = Question.find_by(id: params[:id])
   end
 
   def question_params
