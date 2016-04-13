@@ -6,6 +6,9 @@ describe 'New Question' do
   end
 
   describe 'Create Question' do
+    let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
+    let(:answer_value)   { FactoryGirl.attributes_for(:question)[:answer] }
+
     before(:each) do
       within('form#new_question') do
         fill_in 'question_question', with: question_value
@@ -46,6 +49,22 @@ describe 'New Question' do
 
       it 'displays "What is the capital of Japan?" in the question list' do
         expect(page).to have_css("ul > li > a", text: question_value)
+      end
+    end
+
+    context 'When input "# title" that corresponds to <h1> of Markdown to Question' do
+      let(:question_value) { "# title" }
+
+      it 'displays "title" in the question list' do
+        expect(page).to have_css("ul > li > a", text: "title")
+      end
+    end
+
+    context 'When input "**title**" that corresponds to <strong> of Markdown to Question' do
+      let(:question_value) { "**title**" }
+
+      it 'displays "title" in the question list' do
+        expect(page).to have_css("ul > li > a", text: "title")
       end
     end
   end
