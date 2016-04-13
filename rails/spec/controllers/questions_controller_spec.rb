@@ -240,4 +240,70 @@ RSpec.describe QuestionsController, :type => :controller do
       end
     end
   end
+
+  describe "POST #answer" do
+    subject { post :answer, params }
+
+    shared_examples_for :renders_the_answer_template do
+      it "renders the :answer template" do
+        subject
+        expect(response).to render_template(:answer)
+      end
+    end
+
+    shared_examples_for :assigns_false_to_is_correct do
+      it "assigns false to @is_correct" do
+        subject
+        expect(assigns(:is_correct)).to be false
+      end
+    end
+
+    shared_examples_for :assigns_true_to_is_correct do
+      it "assigns true to @is_correct" do
+        subject
+        expect(assigns(:is_correct)).to be true
+      end
+    end
+
+    let(:params) {
+      {
+        id: id,
+        answer: {
+          answer: answer,
+        }.compact,
+      }.compact
+    }
+    let(:answer) { FactoryGirl.attributes_for(:question)[:answer] }
+
+    context do
+      include_context "when id that does not match any question is specified"
+
+      it_behaves_like :assigns_nil_to_question
+      it_behaves_like :renders_the_show_template
+    end
+
+    context do
+      include_context "when id that matches existent question is specified"
+
+      context "when answer is not specified" do
+        let(:answer) { nil }
+
+        it_behaves_like :renders_the_show_template
+      end
+
+      context "when answer is blank" do
+        let(:answer) { "" }
+
+        it_behaves_like :assigns_false_to_is_correct
+        it_behaves_like :renders_the_answer_template
+      end
+
+      context "when right answer is specified" do
+        let(:answer) { question.answer }
+
+        it_behaves_like :assigns_true_to_is_correct
+        it_behaves_like :renders_the_answer_template
+      end
+    end
+  end
 end
