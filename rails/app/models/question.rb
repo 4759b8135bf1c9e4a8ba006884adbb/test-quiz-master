@@ -12,6 +12,16 @@ class Question < ActiveRecord::Base
     answer == submission
   end
 
+  # Returns whether the argument value matches the answer.
+  #
+  # If the answer is number string, and the argument value is number word,
+  # It assumes that matches, and vice versa.
+  #
+  # Before matching, the argument value is sanitized by removing leading/trailing
+  # whitespaces and squeezing blank between characters.
+  #
+  # @param  [String] submission
+  # @return [Boolean]
   def is_correct?(submission)
     return true if /\A#{answer}\z/i === sanitize(submission)
     return true if is_number?(submission) && submission.to_f.to_words == answer
