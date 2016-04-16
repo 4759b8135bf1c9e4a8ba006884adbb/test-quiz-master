@@ -16,10 +16,6 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
-  rescue ActionController::ParameterMissing => e
-    logger.warn e.message
-    render :new
-    return
   end
 
   def update
@@ -33,10 +29,6 @@ class QuestionsController < ApplicationController
     else
       render :edit
     end
-  rescue ActionController::ParameterMissing => e
-    logger.warn e.message
-    render :edit
-    return
   end
 
   def answer
@@ -46,10 +38,6 @@ class QuestionsController < ApplicationController
     end
 
     @is_correct = @question.is_correct?(answer_params[:answer])
-  rescue ActionController::ParameterMissing => e
-    logger.warn e.message
-    render :show
-    return
   end
 
   private

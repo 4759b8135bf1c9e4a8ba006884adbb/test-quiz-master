@@ -292,7 +292,7 @@ RSpec.describe QuestionsController, :type => :controller do
       context "when answer is not specified" do
         let(:answer) { nil }
 
-        it_behaves_like :renders_the_show_template
+        it_behaves_like :renders_nothing_with_status_400
       end
 
       context "when answer is blank" do

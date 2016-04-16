@@ -31,3 +31,11 @@ shared_examples_for :renders_the_edit_template do
     expect(response).to render_template(:edit)
   end
 end
+
+shared_examples_for :renders_nothing_with_status_400 do
+  it "renders nothing with status 400" do
+    subject
+    expect(response.status).to be 400
+    expect(response.body).to   be_blank
+  end
+end
