@@ -8,10 +8,6 @@ class Question < ActiveRecord::Base
     self.answer = sanitize(attrs[:answer])
   end
 
-  def is_correct?(submission)
-    answer == submission
-  end
-
   # Returns whether the argument value matches the answer.
   #
   # If the answer is number string, and the argument value is number word,
