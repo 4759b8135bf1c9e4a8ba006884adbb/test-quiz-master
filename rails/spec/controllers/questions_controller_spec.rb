@@ -128,6 +128,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
       it_behaves_like :has_a_question_presence_validation_error
       it_behaves_like :renders_the_new_template
+      it_behaves_like :does_not_change_the_question_count
     end
 
     context "when question is blank" do
@@ -135,6 +136,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
       it_behaves_like :has_a_question_presence_validation_error
       it_behaves_like :renders_the_new_template
+      it_behaves_like :does_not_change_the_question_count
     end
 
     context "when answer is not specified" do
@@ -142,6 +144,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
       it_behaves_like :has_an_answer_presence_validation_error
       it_behaves_like :renders_the_new_template
+      it_behaves_like :does_not_change_the_question_count
     end
 
     context "when answer is blank" do
@@ -149,6 +152,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
       it_behaves_like :has_an_answer_presence_validation_error
       it_behaves_like :renders_the_new_template
+      it_behaves_like :does_not_change_the_question_count
     end
 
     context "when valid params are specified" do
