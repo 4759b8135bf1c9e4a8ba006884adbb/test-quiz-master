@@ -123,42 +123,58 @@ RSpec.describe QuestionsController, :type => :controller do
     let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
     let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
 
-    context "when question is not specified" do
-      let(:question_value) { nil }
+    describe "when [Preview] is clicked" do
+      before(:each) do
+        params.merge!(preview_button: "Preview")
+      end
 
-      it_behaves_like :has_a_question_presence_validation_error
-      it_behaves_like :renders_the_new_template
-      it_behaves_like :does_not_change_the_question_count
+      context "when valid params are specified" do
+        let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
+        let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
+
+        it_behaves_like :renders_the_new_template
+        it_behaves_like :does_not_change_the_question_count
+      end
     end
 
-    context "when question is blank" do
-      let(:question_value) { "" }
+    describe "when [Create Question] is clicked" do
+      context "when question is not specified" do
+        let(:question_value) { nil }
 
-      it_behaves_like :has_a_question_presence_validation_error
-      it_behaves_like :renders_the_new_template
-      it_behaves_like :does_not_change_the_question_count
-    end
+        it_behaves_like :has_a_question_presence_validation_error
+        it_behaves_like :renders_the_new_template
+        it_behaves_like :does_not_change_the_question_count
+      end
 
-    context "when answer is not specified" do
-      let(:answer) { nil }
+      context "when question is blank" do
+        let(:question_value) { "" }
 
-      it_behaves_like :has_an_answer_presence_validation_error
-      it_behaves_like :renders_the_new_template
-      it_behaves_like :does_not_change_the_question_count
-    end
+        it_behaves_like :has_a_question_presence_validation_error
+        it_behaves_like :renders_the_new_template
+        it_behaves_like :does_not_change_the_question_count
+      end
 
-    context "when answer is blank" do
-      let(:answer) { "" }
+      context "when answer is not specified" do
+        let(:answer) { nil }
 
-      it_behaves_like :has_an_answer_presence_validation_error
-      it_behaves_like :renders_the_new_template
-      it_behaves_like :does_not_change_the_question_count
-    end
+        it_behaves_like :has_an_answer_presence_validation_error
+        it_behaves_like :renders_the_new_template
+        it_behaves_like :does_not_change_the_question_count
+      end
 
-    context "when valid params are specified" do
-      it_behaves_like :redirects_to_the_root_path
-      it_behaves_like :notices_question_created_successfully
-      it_behaves_like :increases_the_question_count
+      context "when answer is blank" do
+        let(:answer) { "" }
+
+        it_behaves_like :has_an_answer_presence_validation_error
+        it_behaves_like :renders_the_new_template
+        it_behaves_like :does_not_change_the_question_count
+      end
+
+      context "when valid params are specified" do
+        it_behaves_like :redirects_to_the_root_path
+        it_behaves_like :notices_question_created_successfully
+        it_behaves_like :increases_the_question_count
+      end
     end
   end
 
@@ -207,40 +223,55 @@ RSpec.describe QuestionsController, :type => :controller do
     context do
       include_context "when id that matches existent question is specified"
 
-      context "when question is not specified" do
-        let(:question_value) { nil }
+      describe "when [Preview] is clicked" do
+        before(:each) do
+          params.merge!(preview_button: "Preview")
+        end
 
-        it_behaves_like :redirects_to_the_root_path
-        it_behaves_like :notices_question_saved_successfully
+        context "when valid question and answer are specified" do
+          let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
+          let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
+
+          it_behaves_like :renders_the_edit_template
+        end
       end
 
-      context "when question is blank" do
-        let(:question_value) { "" }
+      describe "when [Update Question] is clicked" do
+        context "when question is not specified" do
+          let(:question_value) { nil }
 
-        it_behaves_like :has_a_question_presence_validation_error
-        it_behaves_like :renders_the_edit_template
-      end
+          it_behaves_like :redirects_to_the_root_path
+          it_behaves_like :notices_question_saved_successfully
+        end
 
-      context "when answer is not specified" do
-        let(:answer) { nil }
+        context "when question is blank" do
+          let(:question_value) { "" }
 
-        it_behaves_like :redirects_to_the_root_path
-        it_behaves_like :notices_question_saved_successfully
-      end
+          it_behaves_like :has_a_question_presence_validation_error
+          it_behaves_like :renders_the_edit_template
+        end
 
-      context "when answer is blank" do
-        let(:answer) { "" }
+        context "when answer is not specified" do
+          let(:answer) { nil }
 
-        it_behaves_like :has_an_answer_presence_validation_error
-        it_behaves_like :renders_the_edit_template
-      end
+          it_behaves_like :redirects_to_the_root_path
+          it_behaves_like :notices_question_saved_successfully
+        end
 
-      context "when valid question and answer are specified" do
-        let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
-        let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
+        context "when answer is blank" do
+          let(:answer) { "" }
 
-        it_behaves_like :redirects_to_the_root_path
-        it_behaves_like :notices_question_saved_successfully
+          it_behaves_like :has_an_answer_presence_validation_error
+          it_behaves_like :renders_the_edit_template
+        end
+
+        context "when valid question and answer are specified" do
+          let(:question_value) { FactoryGirl.attributes_for(:question)[:question] }
+          let(:answer)         { FactoryGirl.attributes_for(:question)[:answer] }
+
+          it_behaves_like :redirects_to_the_root_path
+          it_behaves_like :notices_question_saved_successfully
+        end
       end
     end
   end

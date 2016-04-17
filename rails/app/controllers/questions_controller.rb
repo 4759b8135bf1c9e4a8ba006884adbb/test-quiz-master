@@ -11,6 +11,12 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new question_params
+
+    if params[:preview_button]
+      render :new
+      return
+    end
+
     if @question.save
       redirect_to root_path, notice: 'Question created successfully.'
     else
@@ -24,7 +30,14 @@ class QuestionsController < ApplicationController
       return
     end
 
-    if @question.update_attributes question_params
+    @question.attributes = question_params
+
+    if params[:preview_button]
+      render :edit
+      return
+    end
+
+    if @question.save
       redirect_to root_path, notice: 'Question saved successfully.'
     else
       render :edit

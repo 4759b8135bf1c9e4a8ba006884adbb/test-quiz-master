@@ -5,14 +5,37 @@ describe 'Edit Question' do
 
   before(:each) do
     visit "/questions/#{question.id}/edit"
+
+    within("form#edit_question_#{question.id}") do
+      fill_in 'question_question', with: question_value
+      fill_in 'question_answer',   with: answer_value
+    end
   end
 
-  describe 'Update Question' do
+  describe 'when [Preview] is clicked' do
     before(:each) do
       within("form#edit_question_#{question.id}") do
-        fill_in 'question_question', with: question_value
-        fill_in 'question_answer',   with: answer_value
+        click_button "Preview"
+      end
+    end
 
+    context 'When input "What is the closest planet to the Sun?" to Question, "Mercury" to Answer' do
+      let(:question_value) { "What is the closest planet to the Sun?" }
+      let(:answer_value)   { "Mercury" }
+
+      it 'does not display "Question saved successfully."' do
+        expect(page).not_to have_css(".alert", text: "Question saved successfully.")
+      end
+
+      it 'displays the current path /questions/:id' do
+        expect(page).to have_current_path("/questions/#{question.id}")
+      end
+    end
+  end
+
+  describe 'when [Update Question] is clicked' do
+    before(:each) do
+      within("form#edit_question_#{question.id}") do
         click_button "Update Question"
       end
     end

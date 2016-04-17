@@ -1,5 +1,4 @@
 = form_for @question do |f|
-
   - if @question.errors.present?
     .alert.alert-danger
       - @question.errors.full_messages.each do |message|
@@ -13,4 +12,15 @@
     = f.label :answer
     = f.text_field :answer, class: 'form-control'
 
+  = f.submit "Preview", name: :preview_button, class: 'btn btn-success'
   = f.submit nil, class: 'btn btn-primary'
+
+  - if params[:preview_button]
+    %hr
+    #preview.panel.panel-success
+      .panel-heading
+        Preview
+      .panel-body
+        = markdown(@question.question).html_safe
+      .panel-footer
+        = extract_title(@question)
